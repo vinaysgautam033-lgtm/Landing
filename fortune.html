@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fortune Cookie</title>
+<style>
+  :root { --bg:#fbefd5; --ink:#3b2a14; --paper:#fffaf0; --accent:#c8791d; color-scheme: light; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#1d1710; --ink:#f4e6cc; --paper:#2a2116; --accent:#e9a24a; color-scheme: dark; }
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body { background: var(--bg); color: var(--ink); font-family: Georgia, "Times New Roman", serif;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px; padding: 24px; text-align: center; }
+  #cookie { font-size: 6rem; background: none; border: 0; cursor: pointer; line-height: 1; transition: transform .25s; }
+  #cookie:hover { transform: rotate(-8deg) scale(1.05); }
+  #cookie.crack { transform: scale(1.2) rotate(12deg); }
+  #cookie:focus-visible, #again:focus-visible { outline: 3px solid var(--accent); outline-offset: 6px; border-radius: 12px; }
+  .slip { background: var(--paper); border: 1px solid var(--accent); padding: 24px 28px; max-width: 460px; min-height: 110px;
+    font-size: 1.35rem; line-height: 1.5; font-style: italic; display: flex; align-items: center; justify-content: center; }
+  #again { background: var(--accent); color: #1d1710; border: 0; border-radius: 999px; padding: 12px 24px; font: inherit; font-weight: 700; cursor: pointer; }
+  h1 { margin: 0; font-size: 1.6rem; }
+</style>
+</head>
+<body>
+  <h1>Fortune Cookie</h1>
+  <button id="cookie" aria-label="Crack the cookie">🥠</button>
+  <div class="slip" id="slip" aria-live="polite">Tap the cookie to read your fortune.</div>
+  <button id="again">Another fortune</button>
+<script>
+  var fortunes = [
+    "The bug you are chasing is in the line you trust most.",
+    "A small step today beats a perfect plan next week.",
+    "Someone will soon thank you for something you forgot you did.",
+    "Your next idea arrives while you are doing the dishes.",
+    "Say yes to the invitation you almost declined.",
+    "Rest is also progress.",
+    "The shortcut you take today becomes tomorrow's long road.",
+    "A stranger's smile will outlast your bad mood.",
+    "Finish the small thing first. Momentum is on its way.",
+    "You already know the answer. Ask a different question.",
+    "Good news travels slowly, but it is on its way.",
+    "Read the error message. It is kinder than it looks."
+  ];
+  var last = -1;
+  var cookie = document.getElementById('cookie');
+  var slip = document.getElementById('slip');
+  function pick() {
+    var i;
+    do { i = Math.floor(Math.random() * fortunes.length); } while (i === last);
+    last = i;
+    slip.textContent = fortunes[i];
+    cookie.classList.add('crack');
+    setTimeout(function () { cookie.classList.remove('crack'); }, 250);
+  }
+  cookie.addEventListener('click', pick);
+  document.getElementById('again').addEventListener('click', pick);
+</script>
+</body>
+</html>
